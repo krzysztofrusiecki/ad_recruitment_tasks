@@ -23,5 +23,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.todos = require("../models/Todo")(sequelize, Sequelize);
+db.users = require("../models/User")(sequelize, Sequelize);
 
 module.exports = db;

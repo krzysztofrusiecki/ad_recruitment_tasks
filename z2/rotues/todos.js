@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const {
   getTodos,
-  getTodo,
+  // getTodo,
   createTodo,
   updateTodo,
   deleteTodo,
@@ -16,7 +16,7 @@ router.get("/", getTodos);
 
 // @desc    Get one todo
 // @route   GET /todos/:id
-router.get("/:id", getTodo);
+// router.get("/:id", getTodo);
 
 // @desc    Create todo
 // @route   POST /todos

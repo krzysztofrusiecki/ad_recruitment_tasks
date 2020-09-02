@@ -1,32 +1,28 @@
 module.exports = (sequelize, Sequelize) => {
-  const Todo = sequelize.define("todo", {
+  const User = sequelize.define("user", {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
-    title: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    checked: {
-      type: Sequelize.BOOLEAN,
+    password: {
+      type: Sequelize.STRING,
       allowNull: false,
     },
     deadline: {
       type: Sequelize.DATE,
       allowNull: true,
     },
-    userId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
   });
-  Todo.associate = (db) => {
-    Todo.belongsTo(db.users, {
-      foreignKey: "userId",
+  User.associate = (db) => {
+    User.hasMany(db.todos, {
+      foreignKey: "todoId",
     });
   };
-  return Todo;
+  return User;
 };
