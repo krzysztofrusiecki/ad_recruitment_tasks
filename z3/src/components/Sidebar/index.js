@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import { Menu, Container, Button, Image } from "semantic-ui-react";
+import { Menu, Container, Button, Image, Label } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 import Logo from "../../assets/logo2.svg";
 import { signout } from "../../actions/authActions";
+import { filterTodos } from "../../actions/todoActions";
 
-const Sidebar = ({ signout }) => {
+const Sidebar = ({ signout, filterTodos, amount }) => {
   const [activeItem, setActiveItem] = useState("ALL TODOS");
 
   const handleItemClick = (e) => {
-    setActiveItem(e.target.innerText.toUpperCase());
+    const name = e.target.innerText.split("\n")[1].toUpperCase();
+    let filter = "";
+    if (name === "ALL TODOS") filter = "";
+    else if (name === "TODAY") filter = "TODAY";
+    else if (name === "THIS WEEK") filter = "THIS WEEK";
+    else if (name === "COMPLETED") filter = "COMPLETED";
+    console.log(filter);
+    filterTodos(filter);
+    setActiveItem(name);
   };
 
   return (
@@ -47,22 +56,34 @@ const Sidebar = ({ signout }) => {
             name="All todos"
             active={activeItem === "ALL TODOS"}
             onClick={(e) => handleItemClick(e)}
-          />
+          >
+            <Label>{amount.all}</Label>
+            All Todos
+          </Menu.Item>
           <Menu.Item
             name="Today"
             active={activeItem === "TODAY"}
             onClick={(e) => handleItemClick(e)}
-          />
+          >
+            <Label>{amount.today}</Label>
+            Today
+          </Menu.Item>
           <Menu.Item
             name="This week"
             active={activeItem === "THIS WEEK"}
             onClick={(e) => handleItemClick(e)}
-          />
+          >
+            <Label>{amount.thisWeek}</Label>
+            This Week
+          </Menu.Item>
           <Menu.Item
             name="Completed"
             active={activeItem === "COMPLETED"}
             onClick={(e) => handleItemClick(e)}
-          />
+          >
+            <Label>{amount.completed}</Label>
+            Completed
+          </Menu.Item>
         </Menu>
       </Container>
       <Button style={{ width: "80%" }} onClick={signout}>
@@ -72,4 +93,4 @@ const Sidebar = ({ signout }) => {
   );
 };
 
-export default connect(null, { signout })(Sidebar);
+export default connect(null, { signout, filterTodos })(Sidebar);

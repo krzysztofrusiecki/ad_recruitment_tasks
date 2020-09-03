@@ -8,7 +8,6 @@ module.exports = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log(token);
   if (!token || token === "") {
     req.isAuth = false;
     return next();
@@ -25,7 +24,6 @@ module.exports = (req, res, next) => {
     req.isAuth = false;
     return next();
   }
-  console.log(decodedToken);
 
   req.isAuth = true;
   req.id = decodedToken.id;

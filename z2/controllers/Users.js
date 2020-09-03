@@ -70,7 +70,21 @@ const signIn = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ where: { id: req.id } });
+    if (!user) throw Error("User Does not exist");
+    return res.status(200).json({
+      id: user.id,
+      email: user.email,
+    });
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
+  getUser,
 };

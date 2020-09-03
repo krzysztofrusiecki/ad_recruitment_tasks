@@ -14,10 +14,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    deadline: {
-      type: Sequelize.DATE,
-      allowNull: true,
-    },
   });
   User.associate = (db) => {
     User.hasMany(db.todos, {

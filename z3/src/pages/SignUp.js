@@ -25,7 +25,9 @@ const SignUp = ({ isAuthenticated, error, signup }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    signup({ email, password });
+    if (email && password) {
+      signup({ email, password });
+    }
   };
 
   useEffect(() => {

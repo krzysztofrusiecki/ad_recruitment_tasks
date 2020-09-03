@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
     deadline: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
       allowNull: true,
     },
     userId: {

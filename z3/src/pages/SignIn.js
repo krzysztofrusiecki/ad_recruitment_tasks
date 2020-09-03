@@ -17,15 +17,17 @@ import { signin } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
 
 const SignIn = ({ isAuthenticated, error, signin }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("rusioful@gmail.com");
+  const [password, setPassword] = useState("rwasr997");
   const [msg, setMsg] = useState(null);
   let history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    signin({ email, password });
+    if (email && password) {
+      signin({ email, password });
+    }
   };
 
   useEffect(() => {
