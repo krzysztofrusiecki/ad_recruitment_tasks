@@ -4,6 +4,7 @@ const Todo = db.todos;
 const getTodos = async (req, res) => {
   if (!req.isAuth) return res.status(400).json({ msg: "Access Denied" });
   const userId = req.id;
+  if (userId !== req.id) return res.status(400).json({ msg: "Access Denied" });
   try {
     const todos = await Todo.findAll({ where: { userId } });
     if (!todos) throw Error("No todos");
@@ -15,9 +16,11 @@ const getTodos = async (req, res) => {
 };
 
 const createTodo = async (req, res) => {
-  if (!req.isAuth) return res.status(400).json({ message: "Access Denied" });
+  if (!req.isAuth) return res.status(400).json({ msg: "Access Denied" });
   const userId = req.id;
   const { title, deadline } = req.body;
+  console.log(`DEADLINE:\t${deadline}`);
+  if (!title) return res.status(400).json({ msg: "Title must not be null" });
   try {
     let todo = await Todo.create({
       title,
@@ -34,12 +37,13 @@ const createTodo = async (req, res) => {
       deadline: todo.deadline,
     });
   } catch (err) {
+    console.log(err);
     return res.status(400).json({ msg: err.message });
   }
 };
 
 const updateTodo = async (req, res) => {
-  if (!req.isAuth) return res.status(400).json({ message: "Access Denied" });
+  if (!req.isAuth) return res.status(400).json({ msg: "Access Denied" });
   const userId = req.id;
   const id = req.params.id;
   const { title, checked, deadline } = req.body;
@@ -61,7 +65,7 @@ const updateTodo = async (req, res) => {
 };
 
 const deleteTodo = async (req, res) => {
-  if (!req.isAuth) return res.status(400).json({ message: "Access Denied" });
+  if (!req.isAuth) return res.status(400).json({ msg: "Access Denied" });
   const userId = req.id;
   const id = req.params.id;
   try {

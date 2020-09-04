@@ -46,6 +46,7 @@ export const signup = ({ email, password }) => (dispatch) => {
       });
     })
     .catch((err) => {
+      console.log(JSON.stringify(err.response));
       dispatch(
         returnErrors(err.response.data, err.response.status, "SIGNUP_FAIL")
       );

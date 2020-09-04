@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 
 import Logo from "../assets/logo1.svg";
 import { signup } from "../actions/authActions";
-import { clearErrors } from "../actions/errorActions";
 
 const SignUp = ({ isAuthenticated, error, signup }) => {
   const [email, setEmail] = useState("");
@@ -27,18 +26,20 @@ const SignUp = ({ isAuthenticated, error, signup }) => {
 
     if (email && password) {
       signup({ email, password });
+      setMsg(null);
     }
   };
 
   useEffect(() => {
     if (error.id === "SIGNUP_FAIL") {
-      setMsg(error.msg.msg);
+      setMsg(error.msg.error);
     } else {
       setMsg(null);
     }
     if (isAuthenticated) {
       history.push("/todos");
     }
+    console.log("I AM IN SIGNUP", msg);
   }, [error, isAuthenticated]);
 
   return (
@@ -131,4 +132,4 @@ const mapStateToProps = (state) => ({
   error: state.error,
 });
 
-export default connect(mapStateToProps, { signup, clearErrors })(SignUp);
+export default connect(mapStateToProps, { signup })(SignUp);

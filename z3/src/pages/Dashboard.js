@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Container, List, Form, Button } from "semantic-ui-react";
+import { Container, List, Form, Button, Header } from "semantic-ui-react";
 import { useLastLocation } from "react-router-last-location";
 
 import MainTemplate from "../templates/MainTemplate";
@@ -21,9 +21,12 @@ const Dashboard = ({
   deleteTodo,
   filter,
   updateTodo,
+  error,
+  user,
 }) => {
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [msg, setMsg] = useState(null);
   const history = useHistory();
   const lastLocation = useLastLocation();
 
@@ -39,10 +42,13 @@ const Dashboard = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (title && deadline) {
+    if (title) {
       createTodo({ title, deadline });
       setTitle("");
       setDeadline("");
+      setMsg("");
+    } else {
+      setMsg("Title cannot be empty");
     }
   };
 
@@ -84,6 +90,12 @@ const Dashboard = ({
   return (
     <MainTemplate>
       <Container>
+        <Header as="h3">{user && `Welcome, ${user}`}</Header>
+        {msg ? (
+          <Header color="red" as="h5">
+            {msg}
+          </Header>
+        ) : null}
         <Form onSubmit={handleSubmit}>
           <Form.Group widths="equal">
             <Form.Input
@@ -131,6 +143,7 @@ const Dashboard = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                fontWeight: "bold",
               }}
             >
               <List.Header>Title</List.Header>
@@ -158,6 +171,8 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   todos: state.todo.todos,
   filter: state.todo.filter,
+  error: state.error,
+  user: state.auth.user ? state.auth.user.email : null,
 });
 
 export default connect(mapStateToProps, {

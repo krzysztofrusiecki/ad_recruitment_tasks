@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 
 import Logo from "../assets/logo1.svg";
 import { signin } from "../actions/authActions";
-import { clearErrors } from "../actions/errorActions";
 
 const SignIn = ({ isAuthenticated, error, signin }) => {
   const [email, setEmail] = useState("rusioful@gmail.com");
@@ -27,6 +26,7 @@ const SignIn = ({ isAuthenticated, error, signin }) => {
 
     if (email && password) {
       signin({ email, password });
+      setMsg(null);
     }
   };
 
@@ -131,4 +131,4 @@ const mapStateToProps = (state) => ({
   error: state.error,
 });
 
-export default connect(mapStateToProps, { signin, clearErrors })(SignIn);
+export default connect(mapStateToProps, { signin })(SignIn);

@@ -16,7 +16,7 @@ const Sidebar = ({ signout, filterTodos, amount }) => {
     else if (name === "TODAY") filter = "TODAY";
     else if (name === "THIS WEEK") filter = "THIS WEEK";
     else if (name === "COMPLETED") filter = "COMPLETED";
-    console.log(filter);
+
     filterTodos(filter);
     setActiveItem(name);
   };

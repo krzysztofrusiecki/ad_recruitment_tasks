@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const { registerValidation, loginValidation } = require("../validation");
 const db = require("../config/db");
 const User = db.users;
 
@@ -9,6 +10,8 @@ const signUp = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
+  const { error } = registerValidation(req.body);
+  if (error) return res.status(400).json({ msg: error.details[0].message });
 
   try {
     let user = await User.findOne({ where: { email } });
@@ -18,7 +21,7 @@ const signUp = async (req, res) => {
     if (!hashedPassword)
       throw Error("Someting went wrong with hashing the password");
 
-    user = User.create({
+    user = await User.create({
       email,
       password: hashedPassword,
     });
@@ -27,6 +30,8 @@ const signUp = async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
       expiresIn: "1h",
     });
+    console.log(`TOKEN:\t${token}`);
+    console.log(`USER:\t${user}`);
 
     res.status(200).json({
       token,
@@ -36,7 +41,7 @@ const signUp = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(400).json({ error: e.message });
+    return res.status(400).json({ error: error.message });
   }
 };
 
@@ -45,6 +50,8 @@ const signIn = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({ msg: "Please enter all fields" });
   }
+  const { error } = loginValidation(req.body);
+  if (error) return res.status(400).json({ msg: error.details[0].message });
 
   try {
     let user = await User.findOne({ where: { email } });
@@ -71,6 +78,7 @@ const signIn = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
+  if (!req.id) return res.status(400).json({ msg: "No user was logged in" });
   try {
     const user = await User.findOne({ where: { id: req.id } });
     if (!user) throw Error("User Does not exist");
