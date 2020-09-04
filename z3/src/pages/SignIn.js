@@ -16,8 +16,8 @@ import Logo from "../assets/logo1.svg";
 import { signin } from "../actions/authActions";
 
 const SignIn = ({ isAuthenticated, error, signin }) => {
-  const [email, setEmail] = useState("rusioful@gmail.com");
-  const [password, setPassword] = useState("rwasr997");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [msg, setMsg] = useState(null);
   let history = useHistory();
 
